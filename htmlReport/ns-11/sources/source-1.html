@@ -1,0 +1,219 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AllRecipeViewModel</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.sample.presentation.feature.allrecipes.viewmodel</a>
+</div>
+
+<h1>Coverage Summary for Class: AllRecipeViewModel (com.sample.presentation.feature.allrecipes.viewmodel)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AllRecipeViewModel</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/9)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">AllRecipeViewModel$handleEvent$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">AllRecipeViewModel$handleEvent$1$res$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (16/16)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.sample.presentation.feature.allrecipes.viewmodel
+&nbsp;
+&nbsp;import androidx.lifecycle.ViewModel
+&nbsp;import androidx.lifecycle.viewModelScope
+&nbsp;import com.sample.core.networking.NetworkModule
+&nbsp;import com.sample.domain.allrecipes.AllRecipesUseCase
+&nbsp;import com.sample.domain.allrecipes.model.AllRecipes
+&nbsp;import com.sample.presentation.feature.allrecipes.intent.AllRecipesIntent
+&nbsp;import com.sample.presentation.feature.allrecipes.mapper.AllRecipesUiMapper
+&nbsp;import com.sample.presentation.feature.allrecipes.uistate.AllRecipesUiState
+&nbsp;import dagger.hilt.android.lifecycle.HiltViewModel
+&nbsp;import jakarta.inject.Inject
+&nbsp;import kotlinx.coroutines.flow.MutableStateFlow
+&nbsp;import kotlinx.coroutines.flow.StateFlow
+&nbsp;import kotlinx.coroutines.launch
+&nbsp;import com.sample.core.networking.Result.Error
+&nbsp;import com.sample.core.networking.Result.Success
+&nbsp;import kotlinx.coroutines.CoroutineDispatcher
+&nbsp;import kotlinx.coroutines.withContext
+&nbsp;
+&nbsp;@HiltViewModel
+&nbsp;class AllRecipeViewModel @Inject constructor(
+<b class="fc">&nbsp;    private val homeScreenUseCase: AllRecipesUseCase,</b>
+<b class="fc">&nbsp;    private val allRecipesUiMapper: AllRecipesUiMapper,</b>
+<b class="fc">&nbsp;    @NetworkModule.IoDispatcher private val ioScheduler: CoroutineDispatcher</b>
+<b class="fc">&nbsp;) : ViewModel() {</b>
+&nbsp;
+<b class="fc">&nbsp;    private val _allRecipes = MutableStateFlow&lt;AllRecipesUiState&gt;(AllRecipesUiState.LOADING)</b>
+<b class="fc">&nbsp;    val allRecipes: StateFlow&lt;AllRecipesUiState&gt; = _allRecipes</b>
+&nbsp;
+&nbsp;    fun handleEvent(event: AllRecipesIntent) {
+<b class="fc">&nbsp;        when (event) {</b>
+<b class="fc">&nbsp;            AllRecipesIntent.LoadPage -&gt; {</b>
+<b class="fc">&nbsp;                viewModelScope.launch {</b>
+<b class="fc">&nbsp;                    val res = withContext(ioScheduler) {</b>
+<b class="fc">&nbsp;                        homeScreenUseCase()</b>
+&nbsp;                    }
+<b class="fc">&nbsp;                    when (res) {</b>
+<b class="fc">&nbsp;                        is Error -&gt; _allRecipes.value = AllRecipesUiState.ErrorUiState(</b>
+<b class="fc">&nbsp;                            errorMessage = res.throwable?.message ?: &quot;Something went wrong&quot;</b>
+&nbsp;                        )
+&nbsp;
+<b class="fc">&nbsp;                        is Success&lt;AllRecipes&gt; -&gt; _allRecipes.value =</b>
+<b class="fc">&nbsp;                            allRecipesUiMapper.invoke(res.data)</b>
+&nbsp;                    }
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-05-14 18:53</div>
+</div>
+</body>
+</html>

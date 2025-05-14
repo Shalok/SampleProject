@@ -1,0 +1,22 @@
+package com.sample.presentation.feature.allrecipes.uistate
+
+sealed class AllRecipesUiState {
+
+    data object LOADING: AllRecipesUiState()
+
+    data class ErrorUiState(
+        val errorMessage: String
+    ): AllRecipesUiState()
+
+    data class DataLoadedUiState(
+        val totalRecipes: Int,
+        val recipesList: List<RecipeUiState>
+    ): AllRecipesUiState()
+
+    data class RecipeUiState(
+        val name: String,
+        val imageUrl: String,
+        val description: String,
+        val id: String
+    )
+}
