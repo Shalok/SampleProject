@@ -58,7 +58,7 @@ dependencies {
     testImplementation (libs.kotlinx.coroutines.test)
     testImplementation(libs.kover.gradle.plugin)
     // Module dependency
-    implementation(project(":data")) // why domain is dependent on data??
+    //implementation(project(":data")) // why domain is dependent on data??
     implementation(project(":core"))
 }
 subprojects {

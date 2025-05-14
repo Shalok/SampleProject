@@ -1,16 +1,11 @@
 package com.sample.domain.recipedetail
 
 import com.sample.core.networking.Result
-import com.sample.data.recipedetail.RecipeDetailRepository
-import com.sample.data.recipedetail.entity.RecipesDto
-import com.sample.domain.mapper.RecipeDtoMapper
+import com.sample.domain.allrecipes.model.Recipe
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
-import io.mockk.slot
-import io.mockk.spyk
-import junit.framework.TestCase.assertNotNull
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -25,7 +20,6 @@ class RecipeDetailUseCaseTest {
     @RelaxedMockK
     private lateinit var recipeDetailRepository : RecipeDetailRepository
     private lateinit var testClass: RecipeDetailUseCase
-    private val allRecipesDtoMapper = spyk(RecipeDtoMapper())
 
     private val dispatcher = UnconfinedTestDispatcher()
 
@@ -36,17 +30,13 @@ class RecipeDetailUseCaseTest {
     fun setUp(){
         MockKAnnotations.init(this)
         Dispatchers.setMain(dispatcher)
-        testClass = RecipeDetailUseCase(recipeDetailRepository,allRecipesDtoMapper)
+        testClass = RecipeDetailUseCase(recipeDetailRepository)
     }
 
     @Test
     fun invokeTestSuccess() = runTest {
-        val captureDto = slot<RecipesDto>()
-        coEvery { allRecipesDtoMapper.invoke(capture(captureDto)) } answers {
-            callOriginal()
-        }
         coEvery { recipeDetailRepository.getRecipeDetails(any()) } returns  Result.Success(
-            RecipesDto(
+            Recipe(
                 id = 1,
                 name = "name",
                 ingredients = listOf("ingredient"),
@@ -64,10 +54,6 @@ class RecipeDetailUseCaseTest {
         assert(result.data.ingredients[0] == "ingredient")
         assert(result.data.instructions.size == 1)
         assert(result.data.instructions[0] == "instruction")
-        coVerify (exactly = 1){
-            allRecipesDtoMapper.invoke(any())
-        }
-        assertNotNull(captureDto.captured)
     }
 
     @Test
@@ -80,8 +66,5 @@ class RecipeDetailUseCaseTest {
             recipeDetailRepository.getRecipeDetails(any())
         }
         assert(result is Result.Error)
-        coVerify (exactly = 0){
-            allRecipesDtoMapper.invoke(any())
-        }
     }
 }

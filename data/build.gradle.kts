@@ -56,6 +56,7 @@ dependencies {
     testImplementation(libs.kover.gradle.plugin)
     // To test
     implementation(project(":core"))
+    implementation(project(":domain"))
 }
 subprojects {
     apply(plugin = "org.jetbrains.kotlinx.kover")

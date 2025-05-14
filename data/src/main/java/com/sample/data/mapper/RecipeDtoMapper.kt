@@ -1,4 +1,4 @@
-package com.sample.domain.mapper
+package com.sample.data.mapper
 
 import com.sample.data.recipedetail.entity.RecipesDto
 import com.sample.domain.allrecipes.model.Recipe

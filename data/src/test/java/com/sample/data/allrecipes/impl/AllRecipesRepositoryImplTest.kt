@@ -11,7 +11,13 @@ import org.junit.Before
 import org.junit.Test
 import retrofit2.Response
 import  com.sample.core.networking.Result
+import com.sample.data.mapper.AllRecipesDtoMapper
+import com.sample.data.mapper.RecipeDtoMapper
+import io.mockk.coVerify
 import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.spyk
+import junit.framework.TestCase.assertNotNull
 
 class AllRecipesRepositoryImplTest {
 
@@ -19,18 +25,23 @@ class AllRecipesRepositoryImplTest {
     private lateinit var recipesApiServices: RecipesApiServices
     @RelaxedMockK
     private lateinit var runtimeException: RuntimeException
+    private val allRecipesDtoMapper = spyk(AllRecipesDtoMapper(spyk(RecipeDtoMapper())))
+
 
     private lateinit var testClass: AllRecipesRepositoryImpl
 
     @Before
     fun setUp(){
         MockKAnnotations.init(this)
-        testClass = AllRecipesRepositoryImpl(recipesApiServices)
+        testClass = AllRecipesRepositoryImpl(recipesApiServices,allRecipesDtoMapper)
     }
 
     @Test
     fun getAllRecipesSuccessTest()= runTest {
-
+        val captureDto = slot<AllRecipesDto>()
+        coEvery { allRecipesDtoMapper.invoke(capture(captureDto)) } answers {
+            callOriginal()
+        }
         coEvery { recipesApiServices.getAllRecipes() } returns Response.success(
             AllRecipesDto(
                 recipes = listOf(
@@ -47,6 +58,10 @@ class AllRecipesRepositoryImplTest {
         val result = testClass.getAllRecipes()
         assert(result is Result.Success)
         assert((result as Result.Success).data.recipes.size == 1)
+        coVerify (exactly = 1){
+            allRecipesDtoMapper.invoke(any())
+        }
+        assertNotNull(captureDto.captured)
     }
 
     @Test
@@ -56,6 +71,9 @@ class AllRecipesRepositoryImplTest {
         )
         val result = testClass.getAllRecipes()
         assert(result is Result.Error)
+        coVerify (exactly = 0){
+            allRecipesDtoMapper.invoke(any())
+        }
     }
 
     @Test
@@ -66,6 +84,9 @@ class AllRecipesRepositoryImplTest {
         )
         val result = testClass.getAllRecipes()
         assert(result is Result.Error)
+        coVerify (exactly = 0){
+            allRecipesDtoMapper.invoke(any())
+        }
     }
 
     @Test
@@ -73,6 +94,9 @@ class AllRecipesRepositoryImplTest {
         coEvery { recipesApiServices.getAllRecipes() } throws runtimeException
         val result = testClass.getAllRecipes()
         assert(result is Result.Error)
+        coVerify (exactly = 0){
+            allRecipesDtoMapper.invoke(any())
+        }
     }
 
     @Test
@@ -81,5 +105,8 @@ class AllRecipesRepositoryImplTest {
         coEvery { recipesApiServices.getAllRecipes() } throws throwable
         val result = testClass.getAllRecipes()
         assert(result is Result.Error)
+        coVerify (exactly = 0){
+            allRecipesDtoMapper.invoke(any())
+        }
     }
 }

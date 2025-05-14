@@ -69,6 +69,7 @@ dependencies {
     // Module dependency
     implementation(project(":domain"))
     implementation(project(":core"))
+    implementation(project(":data"))
 }
 subprojects {
     apply(plugin = "org.jetbrains.kotlinx.kover")

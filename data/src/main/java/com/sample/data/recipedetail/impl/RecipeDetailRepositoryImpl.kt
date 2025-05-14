@@ -1,20 +1,22 @@
 package com.sample.data.recipedetail.impl
 
 import com.sample.core.networking.Result
-import com.sample.data.recipedetail.RecipeDetailRepository
+import com.sample.domain.recipedetail.RecipeDetailRepository
 import com.sample.data.recipedetail.entity.RecipesDto
 import com.sample.data.services.RecipesApiServices
+import com.sample.domain.allrecipes.model.Recipe
 import jakarta.inject.Inject
 
 internal class RecipeDetailRepositoryImpl @Inject constructor(
-    private val recipesApiServices: RecipesApiServices
+    private val recipesApiServices: RecipesApiServices,
+    private val recipeDtoMapper: com.sample.data.mapper.RecipeDtoMapper
 ) : RecipeDetailRepository {
-    override suspend fun getRecipeDetails(recipeId: String): Result<RecipesDto> {
+    override suspend fun getRecipeDetails(recipeId: String): Result<Recipe> {
         try {
             val response = recipesApiServices.getRecipeDetail(recipeId)
             if (response.isSuccessful) {
                 return response.body()?.let {
-                    Result.Success(it)
+                    Result.Success(recipeDtoMapper.invoke(it))
                 } ?: kotlin.run {
                     Result.Error(Exception("Response body is null"))
                 }
