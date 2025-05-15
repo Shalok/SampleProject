@@ -1,6 +1,3 @@
-import kotlinx.kover.features.jvm.KoverLegacyFeatures.generateXmlReport
-import kotlinx.kover.features.jvm.KoverLegacyFeatures.verify
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)

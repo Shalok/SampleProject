@@ -40,7 +40,9 @@ class RecipeDetailViewModel @Inject constructor(
                         }
                         when (res) {
                             is Result.Error -> _recipeDetail.value =
-                                RecipeDetailUiState.ErrorState(res.throwable?.message ?: "Unknown Error")
+                                RecipeDetailUiState.ErrorState(
+                                    res.throwable?.message ?: "Unknown Error"
+                                )
 
                             is Result.Success<Recipe> -> _recipeDetail.value =
                                 recipeUiMapper.invoke(res.data)

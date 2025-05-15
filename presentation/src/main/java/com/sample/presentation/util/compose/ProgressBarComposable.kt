@@ -27,11 +27,16 @@ fun IndeterminateCircularIndicator(loading: Boolean) {
 @Composable
 fun CustomerCircularProgressBar() {
     Box(
-        modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
         contentAlignment = Alignment.Center
-    ){
+    ) {
         Image(
-            modifier = Modifier.width(52.dp).height(52.dp).padding(top = 24.dp),
+            modifier = Modifier
+                .width(52.dp)
+                .height(52.dp)
+                .padding(top = 24.dp),
             alignment = Alignment.Center,
             contentDescription = "cooking_icon",
             painter = painterResource(R.drawable.ic_cooking_bowl)
@@ -46,6 +51,6 @@ fun CustomerCircularProgressBar() {
 
 @Preview
 @Composable
-fun PreviewLoader(){
+fun PreviewLoader() {
     IndeterminateCircularIndicator(true)
 }

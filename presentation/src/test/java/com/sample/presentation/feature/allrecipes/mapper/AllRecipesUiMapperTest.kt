@@ -3,6 +3,7 @@ package com.sample.presentation.feature.allrecipes.mapper
 import com.sample.domain.allrecipes.entities.AllRecipes
 import com.sample.domain.recipedetail.entities.Recipe
 import com.sample.presentation.feature.allrecipes.uistate.AllRecipesUiState
+import org.junit.Assert
 import org.junit.Test
 
 class AllRecipesUiMapperTest {
@@ -10,7 +11,7 @@ class AllRecipesUiMapperTest {
     private val testClass = AllRecipesUiMapper()
 
     @Test
-    fun mapperWithCompleteData(){
+    fun mapperWithCompleteData() {
         val allRecipes = AllRecipes(
             total = 1,
             recipes = listOf(
@@ -32,27 +33,27 @@ class AllRecipesUiMapperTest {
                     reviewCount = 1,
                     mealType = listOf("mealType")
                 )
-        )
+            )
         )
         val result = testClass.invoke(allRecipes)
-        assert(result is AllRecipesUiState.DataLoadedUiState)
-        assert((result as AllRecipesUiState.DataLoadedUiState).totalRecipes == 1)
-        assert(result.recipesList.size == 1)
-        assert(result.recipesList[0].name == "name")
-        assert(result.recipesList[0].imageUrl == "image")
-        assert(result.recipesList[0].prepTime == "cuisine")
-        assert(result.recipesList[0].id == "1")
+        Assert.assertTrue(result is AllRecipesUiState.DataLoadedUiState)
+        Assert.assertEquals((result as AllRecipesUiState.DataLoadedUiState).totalRecipes, 1)
+        Assert.assertEquals(result.recipesList.size, 1)
+        Assert.assertEquals(result.recipesList[0].name, "name")
+        Assert.assertEquals(result.recipesList[0].imageUrl, "image")
+        Assert.assertEquals(result.recipesList[0].prepTime, "cuisine")
+        Assert.assertEquals(result.recipesList[0].id, "1")
     }
 
     @Test
-    fun mapperWithNullData(){
+    fun mapperWithNullData() {
         val allRecipes = AllRecipes(
             total = null,
             recipes = listOf()
         )
         val result = testClass.invoke(allRecipes)
-        assert(result is AllRecipesUiState.DataLoadedUiState)
-        assert((result as AllRecipesUiState.DataLoadedUiState).totalRecipes == 0)
-        assert(result.recipesList.isEmpty())
+        Assert.assertTrue(result is AllRecipesUiState.DataLoadedUiState)
+        Assert.assertEquals((result as AllRecipesUiState.DataLoadedUiState).totalRecipes, 0)
+        Assert.assertTrue(result.recipesList.isEmpty())
     }
 }

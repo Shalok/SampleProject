@@ -2,6 +2,7 @@ package com.sample.presentation.feature.recipedetails.mapper
 
 import com.sample.domain.recipedetail.entities.Recipe
 import com.sample.presentation.feature.recipedetails.uistate.RecipeDetailUiState
+import org.junit.Assert
 import org.junit.Test
 
 class RecipeUiMapperTest {
@@ -9,7 +10,7 @@ class RecipeUiMapperTest {
     private val testClass = RecipeUiMapper()
 
     @Test
-    fun mapperWithCompleteData(){
+    fun mapperWithCompleteData() {
         val recipe = Recipe(
             id = 1,
             name = "name",
@@ -29,26 +30,25 @@ class RecipeUiMapperTest {
             mealType = listOf("mealType")
         )
         val result = testClass.invoke(recipe)
-        assert(result is RecipeDetailUiState.DataLoaded)
-        assert((result as RecipeDetailUiState.DataLoaded).name == "name")
-        assert(result.imageUrl == "image")
-        assert(result.description == "cuisine")
-        assert(result.id == "1")
-        assert(result.ingredients == listOf("ingredient"))
-        assert(result.instructions == listOf("instruction"))
-        assert(result.prepTimeMinutes == 1)
-        assert(result.cookTimeMinutes == 1)
-        assert(result.servings == 1)
-        assert(result.difficulty == "difficulty")
-        assert(result.cuisine == "cuisine")
-        assert(result.caloriesPerServing == 1)
-        assert(result.tags == listOf("tag"))
-        assert(result.userId == 1)
-        assert(result.rating == 1.0)
+        Assert.assertTrue(result is RecipeDetailUiState.DataLoaded)
+        Assert.assertEquals((result as RecipeDetailUiState.DataLoaded).name, "name")
+        Assert.assertEquals(result.imageUrl, "image")
+        Assert.assertEquals(result.description, "cuisine")
+        Assert.assertEquals(result.id, "1")
+        Assert.assertEquals(result.ingredients, "ingredient")
+        Assert.assertEquals(result.instructions, listOf("instruction"))
+        Assert.assertEquals(result.prepTimeMinutes, 1)
+        Assert.assertEquals(result.cookTimeMinutes, "1")
+        Assert.assertEquals(result.servings, 1)
+        Assert.assertEquals(result.difficulty, "difficulty")
+        Assert.assertEquals(result.cuisine, "cuisine")
+        Assert.assertEquals(result.caloriesPerServing, 1)
+        Assert.assertEquals(result.tags, listOf("tag"))
+        Assert.assertEquals(result.userId, 1)
     }
 
     @Test
-    fun mapperWithNullData(){
+    fun mapperWithNullData() {
         val recipe = Recipe(
             id = null,
             name = null,
@@ -68,22 +68,21 @@ class RecipeUiMapperTest {
             mealType = emptyList()
         )
         val result = testClass.invoke(recipe)
-        assert(result is RecipeDetailUiState.DataLoaded)
-        assert((result as RecipeDetailUiState.DataLoaded).name == "")
-        assert(result.imageUrl == "")
-        assert(result.description == "")
-        assert(result.id == "")
-        assert(result.ingredients.isEmpty())
-        assert(result.instructions.isEmpty())
-        assert(result.prepTimeMinutes == 0)
-        assert(result.cookTimeMinutes == 0)
-        assert(result.servings == 0)
-        assert(result.difficulty == "")
-        assert(result.cuisine == "")
-        assert(result.caloriesPerServing == 0)
-        assert(result.tags.isEmpty())
-        assert(result.userId == 0)
-        assert(result.rating == 0.0)
+        Assert.assertTrue(result is RecipeDetailUiState.DataLoaded)
+        Assert.assertEquals((result as RecipeDetailUiState.DataLoaded).name, "")
+        Assert.assertEquals(result.imageUrl, "")
+        Assert.assertEquals(result.description, "")
+        Assert.assertEquals(result.id, "")
+        Assert.assertTrue(result.ingredients.isEmpty())
+        Assert.assertTrue(result.instructions.isEmpty())
+        Assert.assertEquals(result.prepTimeMinutes, 0)
+        Assert.assertEquals(result.cookTimeMinutes, "")
+        Assert.assertEquals(result.servings, 0)
+        Assert.assertEquals(result.difficulty, "")
+        Assert.assertEquals(result.cuisine, "")
+        Assert.assertEquals(result.caloriesPerServing, 0)
+        Assert.assertTrue(result.tags.isEmpty())
+        Assert.assertEquals(result.userId, 0)
     }
 
 }

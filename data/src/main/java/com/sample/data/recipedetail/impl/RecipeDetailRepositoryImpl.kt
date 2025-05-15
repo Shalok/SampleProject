@@ -1,9 +1,9 @@
 package com.sample.data.recipedetail.impl
 
 import com.sample.core.networking.Result
-import com.sample.domain.recipedetail.repository.RecipeDetailRepository
 import com.sample.data.services.RecipesApiServices
 import com.sample.domain.recipedetail.entities.Recipe
+import com.sample.domain.recipedetail.repository.RecipeDetailRepository
 import jakarta.inject.Inject
 
 internal class RecipeDetailRepositoryImpl @Inject constructor(

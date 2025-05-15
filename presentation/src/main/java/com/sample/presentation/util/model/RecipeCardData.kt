@@ -10,5 +10,5 @@ data class RecipeCardData(
     val difficulty: String,
     val cuisine: String,
     val modifier: Modifier = Modifier,
-    val callback: ((String)->Unit)? = null
+    val callback: ((String) -> Unit)? = null
 )

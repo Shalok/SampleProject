@@ -8,9 +8,8 @@ import jakarta.inject.Qualifier
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.Converter
 import retrofit2.Converter.Factory
+import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
@@ -23,7 +22,7 @@ class NetworkModule {
         okHttpClient: OkHttpClient,
         @BaseURL baseUrl: String,
         factory: Factory
-    ) : Retrofit {
+    ): Retrofit {
         return Retrofit.Builder().client(okHttpClient)
             .baseUrl(baseUrl)
             .addConverterFactory(factory)
@@ -36,30 +35,30 @@ class NetworkModule {
     }
 
     @Provides
-    fun provideOkHttp(): OkHttpClient{
+    fun provideOkHttp(): OkHttpClient {
         return OkHttpClient
             .Builder()
-            .connectTimeout(5,TimeUnit.SECONDS)
+            .connectTimeout(5, TimeUnit.SECONDS)
             .build()
     }
 
     @Provides
     @BaseURL
-    fun provideAPIExecutor(): String{
+    fun provideAPIExecutor(): String {
         return "https://dummyjson.com/"
     }
 
     @Provides
     @IoDispatcher
-    fun provideIoDispatcher() : CoroutineDispatcher = Dispatchers.IO
+    fun provideIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
 
     @Provides
     @DefaultDispatcher
-    fun provideDefaultDispatcher() : CoroutineDispatcher = Dispatchers.Default
+    fun provideDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
 
     @Provides
     @MainDispatcher
-    fun provideMainDispatcher() : CoroutineDispatcher = Dispatchers.Main
+    fun provideMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
 
     @Qualifier
     annotation class BaseURL

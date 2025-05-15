@@ -41,16 +41,16 @@ android {
 }
 
 dependencies {
-    implementation (libs.ui.tooling.preview)
+    implementation(libs.ui.tooling.preview)
     debugImplementation(libs.androidx.compose.ui.ui.tooling)
     implementation(libs.kotlinx.serialization.json)
-    implementation (libs.androidx.navigation.compose)
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.coil.compose)
     implementation(libs.coil.svg)
     implementation(libs.coil.network.okhttp)
     ksp(libs.hilt.android.compiler)
     implementation(libs.hilt.android)
-    implementation (libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -66,7 +66,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     testImplementation(libs.mockk)
-    testImplementation (libs.kotlinx.coroutines.test)
+    testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.kover.gradle.plugin)
     // Module dependency
     implementation(project(":domain"))

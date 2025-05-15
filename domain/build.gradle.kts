@@ -40,7 +40,7 @@ android {
             excludes += "/META-INF/gradle/incremental.annotation.processors"
         }
     }
-    hilt{
+    hilt {
         enableExperimentalClasspathAggregation = true
     }
 }
@@ -55,10 +55,9 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     testImplementation(libs.mockk)
-    testImplementation (libs.kotlinx.coroutines.test)
+    testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.kover.gradle.plugin)
     // Module dependency
-    //implementation(project(":data")) // why domain is dependent on data??
     implementation(project(":core"))
 }
 subprojects {

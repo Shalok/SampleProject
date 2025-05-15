@@ -1,8 +1,8 @@
 package com.sample.presentation.feature.allrecipes.viewmodel
 
 import com.sample.core.networking.Result
-import com.sample.domain.allrecipes.usecase.AllRecipesUseCase
 import com.sample.domain.allrecipes.entities.AllRecipes
+import com.sample.domain.allrecipes.usecase.AllRecipesUseCase
 import com.sample.domain.recipedetail.entities.Recipe
 import com.sample.presentation.feature.allrecipes.intent.AllRecipesIntent
 import com.sample.presentation.feature.allrecipes.mapper.AllRecipesUiMapper
@@ -11,7 +11,7 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
-import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.SpyK
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
@@ -25,10 +25,10 @@ import org.junit.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class AllRecipeViewModelTest {
 
-    @RelaxedMockK
+    @MockK
     lateinit var getAllRecipeUseCase: AllRecipesUseCase
 
-    @RelaxedMockK
+    @MockK
     lateinit var throwable: Throwable
 
     @SpyK
@@ -49,7 +49,7 @@ class AllRecipeViewModelTest {
     }
 
     @Test
-    fun defaultUiStateTest(){
+    fun defaultUiStateTest() {
         val result = testClass.allRecipes.value
         assert(result is AllRecipesUiState.LOADING)
     }
@@ -57,6 +57,9 @@ class AllRecipeViewModelTest {
     @Test
     fun useCaseInvocation() =
         runTest {
+            coEvery { getAllRecipeUseCase.invoke() } returns Result.Success(
+                getSampleRecipeData()
+            )
             testClass.handleEvent(AllRecipesIntent.LoadPage)
             coVerify(exactly = 1) {
                 getAllRecipeUseCase.invoke()
@@ -66,9 +69,9 @@ class AllRecipeViewModelTest {
     @Test
     fun allRecipesSuccess() = runTest {
         val recipe = getSampleRecipeData()
-            coEvery { getAllRecipeUseCase.invoke() } returns Result.Success(
-                recipe
-            )
+        coEvery { getAllRecipeUseCase.invoke() } returns Result.Success(
+            recipe
+        )
         testClass.handleEvent(AllRecipesIntent.LoadPage)
         val result = testClass.allRecipes.value
         assert(result is AllRecipesUiState.DataLoadedUiState)

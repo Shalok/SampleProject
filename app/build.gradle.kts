@@ -1,5 +1,3 @@
-import com.android.build.api.dsl.Packaging
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -49,7 +47,7 @@ android {
             excludes += "/META-INF/gradle/incremental.annotation.processors"
         }
     }
-    hilt{
+    hilt {
         enableExperimentalClasspathAggregation = true
     }
 
@@ -61,7 +59,7 @@ dependencies {
     implementation(libs.coil.network.okhttp)
     ksp(libs.hilt.android.compiler)
     implementation(libs.hilt.android)
-    implementation (libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

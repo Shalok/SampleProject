@@ -89,7 +89,7 @@ fun ListRecipe(data: DataLoadedUiState, navController: NavHostController) {
                     }
                 )
             )
-                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacer_height_medium)))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacer_height_medium)))
         }
     }
 }

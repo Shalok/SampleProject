@@ -3,19 +3,19 @@ package com.sample.presentation.feature.allrecipes.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sample.core.networking.NetworkModule
-import com.sample.domain.allrecipes.usecase.AllRecipesUseCase
+import com.sample.core.networking.Result.Error
+import com.sample.core.networking.Result.Success
 import com.sample.domain.allrecipes.entities.AllRecipes
+import com.sample.domain.allrecipes.usecase.AllRecipesUseCase
 import com.sample.presentation.feature.allrecipes.intent.AllRecipesIntent
 import com.sample.presentation.feature.allrecipes.mapper.AllRecipesUiMapper
 import com.sample.presentation.feature.allrecipes.uistate.AllRecipesUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import com.sample.core.networking.Result.Error
-import com.sample.core.networking.Result.Success
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
 @HiltViewModel

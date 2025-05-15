@@ -2,23 +2,24 @@ package com.sample.domain.allrecipes.usecase
 
 import com.sample.core.networking.Result
 import com.sample.domain.allrecipes.entities.AllRecipes
-import com.sample.domain.recipedetail.entities.Recipe
 import com.sample.domain.allrecipes.repository.AllRecipesRepository
+import com.sample.domain.recipedetail.entities.Recipe
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
 class AllRecipesUseCaseTest {
 
-    @RelaxedMockK
+    @MockK
     private lateinit var allRecipesRepository: AllRecipesRepository
 
 
-    @RelaxedMockK
+    @MockK
     private lateinit var throwable: Throwable
 
     private lateinit var testClass: AllRecipesUseCase
@@ -50,13 +51,13 @@ class AllRecipesUseCaseTest {
         coVerify(exactly = 1) {
             allRecipesRepository.getAllRecipes()
         }
-        assert((result as Result.Success).data.recipes.size == 1)
-        assert(result.data.recipes[0].id == 1)
-        assert(result.data.recipes[0].name == "name")
-        assert(result.data.recipes[0].ingredients.size == 1)
-        assert(result.data.recipes[0].ingredients[0] == "ingredient")
-        assert(result.data.recipes[0].instructions.size == 1)
-        assert(result.data.recipes[0].instructions[0] == "instruction")
+        Assert.assertEquals((result as Result.Success).data.recipes.size, 1)
+        Assert.assertEquals(result.data.recipes[0].id, 1)
+        Assert.assertEquals(result.data.recipes[0].name, "name")
+        Assert.assertEquals(result.data.recipes[0].ingredients.size, 1)
+        Assert.assertEquals(result.data.recipes[0].ingredients[0], "ingredient")
+        Assert.assertEquals(result.data.recipes[0].instructions.size, 1)
+        Assert.assertEquals(result.data.recipes[0].instructions[0], "instruction")
     }
 
     @Test

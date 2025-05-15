@@ -15,7 +15,7 @@ class RecipeUiMapper @Inject constructor() {
             ingredients = recipe.ingredients.joinToString(separator = ","),
             instructions = recipe.instructions,
             prepTimeMinutes = recipe.prepTimeMinutes ?: 0,
-            cookTimeMinutes =  recipe.cookTimeMinutes?.toString() ?: "",
+            cookTimeMinutes = recipe.cookTimeMinutes?.toString() ?: "",
             servings = recipe.servings ?: 0,
             difficulty = recipe.difficulty ?: "",
             cuisine = recipe.cuisine ?: "",

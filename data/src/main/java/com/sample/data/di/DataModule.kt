@@ -1,12 +1,12 @@
 package com.sample.data.di
 
-import com.sample.domain.allrecipes.repository.AllRecipesRepository
 import com.sample.data.allrecipes.impl.AllRecipesRepositoryImpl
 import com.sample.data.mapper.AllRecipesDtoMapper
 import com.sample.data.mapper.RecipeDtoMapper
-import com.sample.domain.recipedetail.repository.RecipeDetailRepository
 import com.sample.data.recipedetail.impl.RecipeDetailRepositoryImpl
 import com.sample.data.services.RecipesApiServices
+import com.sample.domain.allrecipes.repository.AllRecipesRepository
+import com.sample.domain.recipedetail.repository.RecipeDetailRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -48,7 +48,7 @@ abstract class DataModule {
         fun provideRecipeDetailRepository(
             recipesApiServices: RecipesApiServices,
             recipeDtoMapper: RecipeDtoMapper
-            ): RecipeDetailRepository {
+        ): RecipeDetailRepository {
             return RecipeDetailRepositoryImpl(
                 recipesApiServices,
                 recipeDtoMapper

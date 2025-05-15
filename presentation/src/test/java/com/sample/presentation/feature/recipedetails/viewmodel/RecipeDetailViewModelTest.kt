@@ -11,7 +11,7 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
-import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.SpyK
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
@@ -19,19 +19,20 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class RecipeDetailViewModelTest {
 
-    @RelaxedMockK
+    @MockK
     lateinit var recipeDetailUseCase: RecipeDetailUseCase
 
-    @RelaxedMockK
+    @MockK
     lateinit var stateHandle: SavedStateHandle
 
-    @RelaxedMockK
+    @MockK
     lateinit var throwable: Throwable
 
     @SpyK
@@ -53,14 +54,17 @@ class RecipeDetailViewModelTest {
     }
 
     @Test
-    fun defaultUiStateTest(){
+    fun defaultUiStateTest() {
         val result = testClass.recipeDetail.value
-        assert(result is RecipeDetailUiState.LOADING)
+        Assert.assertTrue(result is RecipeDetailUiState.LOADING)
     }
 
     @Test
     fun useCaseInvocation() =
         runTest {
+            coEvery { recipeDetailUseCase.invoke(any()) } returns Result.Success(
+                getSampleRecipeData()
+            )
             every { stateHandle.get<String>("recipeId") } returns "3"
             testClass.handleEvents(RecipeDetailIntent.LoadPage)
             coVerify(exactly = 1) {
@@ -77,7 +81,7 @@ class RecipeDetailViewModelTest {
         )
         testClass.handleEvents(RecipeDetailIntent.LoadPage)
         val result = testClass.recipeDetail.value
-        assert(result is RecipeDetailUiState.DataLoaded)
+        Assert.assertTrue(result is RecipeDetailUiState.DataLoaded)
         verify { recipesUiMapper.invoke(any()) }
     }
 
@@ -90,8 +94,8 @@ class RecipeDetailViewModelTest {
         every { throwable.message } returns "IO exception"
         testClass.handleEvents(RecipeDetailIntent.LoadPage)
         val result = testClass.recipeDetail.value
-        assert(result is RecipeDetailUiState.ErrorState)
-        assert((result as RecipeDetailUiState.ErrorState).errorMessage == "IO exception")
+        Assert.assertTrue(result is RecipeDetailUiState.ErrorState)
+        Assert.assertTrue((result as RecipeDetailUiState.ErrorState).errorMessage == "IO exception")
         verify(exactly = 0) { recipesUiMapper.invoke(any()) }
     }
 
@@ -100,8 +104,8 @@ class RecipeDetailViewModelTest {
         every { stateHandle.get<String>("recipeId") } returns null
         testClass.handleEvents(RecipeDetailIntent.LoadPage)
         val result = testClass.recipeDetail.value
-        assert(result is RecipeDetailUiState.LOADING)
-        coVerify (exactly = 0){ recipeDetailUseCase.invoke(any()) }
+        Assert.assertTrue(result is RecipeDetailUiState.LOADING)
+        coVerify(exactly = 0) { recipeDetailUseCase.invoke(any()) }
     }
 
     @Test
@@ -113,8 +117,8 @@ class RecipeDetailViewModelTest {
         every { throwable.message } returns null
         testClass.handleEvents(RecipeDetailIntent.LoadPage)
         val result = testClass.recipeDetail.value
-        assert(result is RecipeDetailUiState.ErrorState)
-        assert((result as RecipeDetailUiState.ErrorState).errorMessage == "Unknown Error")
+        Assert.assertTrue(result is RecipeDetailUiState.ErrorState)
+        Assert.assertTrue((result as RecipeDetailUiState.ErrorState).errorMessage == "Unknown Error")
         verify(exactly = 0) { recipesUiMapper.invoke(any()) }
     }
 
@@ -126,16 +130,16 @@ class RecipeDetailViewModelTest {
         )
         testClass.handleEvents(RecipeDetailIntent.LoadPage)
         val result = testClass.recipeDetail.value
-        assert(result is RecipeDetailUiState.ErrorState)
-        assert((result as RecipeDetailUiState.ErrorState).errorMessage == "Unknown Error")
+        Assert.assertTrue(result is RecipeDetailUiState.ErrorState)
+        Assert.assertTrue((result as RecipeDetailUiState.ErrorState).errorMessage == "Unknown Error")
         verify(exactly = 0) { recipesUiMapper.invoke(any()) }
     }
 
     private fun getSampleRecipeData() =
-            Recipe(
-                id = 1,
-                name = "name",
-                image = "image",
-                cuisine = "cuisine"
-            )
+        Recipe(
+            id = 1,
+            name = "name",
+            image = "image",
+            cuisine = "cuisine"
+        )
 }

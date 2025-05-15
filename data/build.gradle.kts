@@ -33,7 +33,7 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    hilt{
+    hilt {
         enableExperimentalClasspathAggregation = true
     }
 }
@@ -42,7 +42,7 @@ dependencies {
     ksp(libs.hilt.android.compiler)
     implementation(libs.hilt.android)
     implementation(libs.retrofit)
-    implementation (libs.gson)
+    implementation(libs.gson)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -50,11 +50,10 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     testImplementation(libs.kover.gradle.plugin)
-    testImplementation (libs.kotlinx.coroutines.test)
+    testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockk)
-    testImplementation (libs.kotlinx.coroutines.test)
+    testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.kover.gradle.plugin)
-    // To test
     implementation(project(":core"))
     implementation(project(":domain"))
 }
