@@ -20,7 +20,7 @@ import kotlinx.coroutines.withContext
 
 @HiltViewModel
 class AllRecipeViewModel @Inject constructor(
-    private val homeScreenUseCase: AllRecipesUseCase,
+    private val allRecipesUseCase: AllRecipesUseCase,
     private val allRecipesUiMapper: AllRecipesUiMapper,
     @NetworkModule.IoDispatcher private val ioScheduler: CoroutineDispatcher
 ) : ViewModel() {
@@ -33,7 +33,7 @@ class AllRecipeViewModel @Inject constructor(
             AllRecipesIntent.LoadPage -> {
                 viewModelScope.launch {
                     val res = withContext(ioScheduler) {
-                        homeScreenUseCase()
+                        allRecipesUseCase()
                     }
                     when (res) {
                         is Error -> _allRecipes.value = AllRecipesUiState.ErrorUiState(
