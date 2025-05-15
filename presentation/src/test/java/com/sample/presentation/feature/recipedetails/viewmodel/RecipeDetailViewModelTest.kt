@@ -2,8 +2,8 @@ package com.sample.presentation.feature.recipedetails.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import com.sample.core.networking.Result
-import com.sample.domain.allrecipes.model.Recipe
-import com.sample.domain.recipedetail.RecipeDetailUseCase
+import com.sample.domain.recipedetail.entities.Recipe
+import com.sample.domain.recipedetail.usecase.RecipeDetailUseCase
 import com.sample.presentation.feature.recipedetails.intent.RecipeDetailIntent
 import com.sample.presentation.feature.recipedetails.mapper.RecipeUiMapper
 import com.sample.presentation.feature.recipedetails.uistate.RecipeDetailUiState

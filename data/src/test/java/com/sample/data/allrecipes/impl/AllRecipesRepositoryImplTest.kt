@@ -1,6 +1,6 @@
 package com.sample.data.allrecipes.impl
 
-import com.sample.data.allrecipes.entity.AllRecipesDto
+import com.sample.data.allrecipes.dtos.AllRecipesDto
 import com.sample.data.recipedetail.entity.RecipesDto
 import com.sample.data.services.RecipesApiServices
 import io.mockk.MockKAnnotations

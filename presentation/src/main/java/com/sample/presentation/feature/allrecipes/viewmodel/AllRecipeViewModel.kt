@@ -3,8 +3,8 @@ package com.sample.presentation.feature.allrecipes.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sample.core.networking.NetworkModule
-import com.sample.domain.allrecipes.AllRecipesUseCase
-import com.sample.domain.allrecipes.model.AllRecipes
+import com.sample.domain.allrecipes.usecase.AllRecipesUseCase
+import com.sample.domain.allrecipes.entities.AllRecipes
 import com.sample.presentation.feature.allrecipes.intent.AllRecipesIntent
 import com.sample.presentation.feature.allrecipes.mapper.AllRecipesUiMapper
 import com.sample.presentation.feature.allrecipes.uistate.AllRecipesUiState

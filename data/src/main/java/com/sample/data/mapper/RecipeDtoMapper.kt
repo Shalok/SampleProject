@@ -1,7 +1,7 @@
 package com.sample.data.mapper
 
 import com.sample.data.recipedetail.entity.RecipesDto
-import com.sample.domain.allrecipes.model.Recipe
+import com.sample.domain.recipedetail.entities.Recipe
 import jakarta.inject.Inject
 
 class RecipeDtoMapper @Inject constructor() {

@@ -5,7 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
 import com.sample.presentation.feature.allrecipes.ui.AllRecipeScreen
 import com.sample.presentation.feature.recipedetails.ui.RecipeDetailScreen
 
@@ -21,12 +20,9 @@ fun AppNavigationHost(
                 navController
             )
         }
-        composable<NavigationItem.RecipeDetail> { backStackEntry ->
-            val recipeDetail: NavigationItem.RecipeDetail = backStackEntry.toRoute()
+        composable<NavigationItem.RecipeDetail> {
             RecipeDetailScreen(
-                innerPadding,
-                navController,
-                recipeDetail.recipeId
+                innerPadding
             )
         }
     }

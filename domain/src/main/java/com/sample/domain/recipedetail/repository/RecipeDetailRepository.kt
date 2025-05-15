@@ -1,7 +1,7 @@
-package com.sample.domain.recipedetail
+package com.sample.domain.recipedetail.repository
 
 import com.sample.core.networking.Result
-import com.sample.domain.allrecipes.model.Recipe
+import com.sample.domain.recipedetail.entities.Recipe
 
 interface RecipeDetailRepository {
     suspend fun getRecipeDetails(recipeId: String): Result<Recipe>

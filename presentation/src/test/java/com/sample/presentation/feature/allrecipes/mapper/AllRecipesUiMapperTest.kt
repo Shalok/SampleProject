@@ -1,7 +1,7 @@
 package com.sample.presentation.feature.allrecipes.mapper
 
-import com.sample.domain.allrecipes.model.AllRecipes
-import com.sample.domain.allrecipes.model.Recipe
+import com.sample.domain.allrecipes.entities.AllRecipes
+import com.sample.domain.recipedetail.entities.Recipe
 import com.sample.presentation.feature.allrecipes.uistate.AllRecipesUiState
 import org.junit.Test
 
@@ -40,7 +40,7 @@ class AllRecipesUiMapperTest {
         assert(result.recipesList.size == 1)
         assert(result.recipesList[0].name == "name")
         assert(result.recipesList[0].imageUrl == "image")
-        assert(result.recipesList[0].description == "cuisine")
+        assert(result.recipesList[0].prepTime == "cuisine")
         assert(result.recipesList[0].id == "1")
     }
 

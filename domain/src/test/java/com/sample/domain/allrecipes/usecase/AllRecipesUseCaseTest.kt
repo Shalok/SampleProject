@@ -1,8 +1,9 @@
-package com.sample.domain.allrecipes
+package com.sample.domain.allrecipes.usecase
 
 import com.sample.core.networking.Result
-import com.sample.domain.allrecipes.model.AllRecipes
-import com.sample.domain.allrecipes.model.Recipe
+import com.sample.domain.allrecipes.entities.AllRecipes
+import com.sample.domain.recipedetail.entities.Recipe
+import com.sample.domain.allrecipes.repository.AllRecipesRepository
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify

@@ -1,35 +1,46 @@
 package com.sample.presentation.feature.recipedetails.ui
 
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight.Companion.W700
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
-import coil3.compose.AsyncImage
-import com.sample.presentation.coreui.IndeterminateCircularIndicator
+import com.sample.presentation.R
 import com.sample.presentation.feature.recipedetails.intent.RecipeDetailIntent
 import com.sample.presentation.feature.recipedetails.uistate.RecipeDetailUiState
 import com.sample.presentation.feature.recipedetails.viewmodel.RecipeDetailViewModel
+import com.sample.presentation.theme.primaryColor
+import com.sample.presentation.util.compose.IndeterminateCircularIndicator
+import com.sample.presentation.util.compose.RecipeCard
+import com.sample.presentation.util.model.RecipeCardData
 
 @Composable
 fun RecipeDetailScreen(
     innerPadding: PaddingValues,
-    navController: NavHostController,
-    recipeId: String,
     viewModel: RecipeDetailViewModel = hiltViewModel()
 ) {
     viewModel.handleEvents(RecipeDetailIntent.LoadPage)
@@ -39,7 +50,6 @@ fun RecipeDetailScreen(
             IndeterminateCircularIndicator(false)
             RecipeDetailScreenContent(
                 data as RecipeDetailUiState.DataLoaded,
-                navController,
                 innerPadding
             )
         }
@@ -49,7 +59,9 @@ fun RecipeDetailScreen(
             IndeterminateCircularIndicator(false)
             Text(text = (data as RecipeDetailUiState.ErrorState).errorMessage)
             Button(
-                modifier = Modifier.wrapContentWidth().wrapContentHeight(),
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .wrapContentHeight(),
                 onClick = {
                     viewModel.handleEvents(RecipeDetailIntent.LoadPage)
                 }
@@ -63,7 +75,6 @@ fun RecipeDetailScreen(
 @Composable
 fun RecipeDetailScreenContent(
     data: RecipeDetailUiState.DataLoaded,
-    navController: NavHostController,
     innerPadding: PaddingValues
 ) {
     Column(
@@ -71,34 +82,68 @@ fun RecipeDetailScreenContent(
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(innerPadding)
+            .verticalScroll(rememberScrollState())
     ) {
-        AsyncImage(
-            modifier = Modifier.aspectRatio(1f),
-            model = data.imageUrl,
-            contentDescription = "Translated description of what the image contains"
+        RecipeCard(
+            RecipeCardData(
+                id = data.id,
+                name = data.name,
+                imageUrl = data.imageUrl,
+                cookingTime = data.cookTimeMinutes,
+                difficulty = data.difficulty,
+                cuisine = data.cuisine
+            ),
+            cardRoundedCornerShape = RoundedCornerShape(0.dp)
         )
-        Text(
-            text = data.name,
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = W700,
-            color = Color.Black
+        Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.spacer_height_medium)))
+        InfoCard(
+            stringResource(R.string.ingredient),
+            R.drawable.ic_ingredient,
+            listOf(data.ingredients)
         )
-        Row {
-            Text(
-                text = "Prep Time: ",
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = W700
-            )
-            Text(
-                text = data.cookTimeMinutes.toString(),
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = W700
-            )
+        Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.spacer_height_medium)))
+        InfoCard(
+            stringResource(R.string.instructions),
+            R.drawable.ic_bullet,
+            data.instructions
+        )
+    }
+}
+
+@Composable
+private fun InfoCard(
+    title: String,
+    @DrawableRes icon: Int,
+    data: List<String>
+) {
+    Text(
+        title,
+        style = MaterialTheme.typography.bodyLarge,
+        fontWeight = FontWeight.Bold,
+        fontFamily = FontFamily.Monospace,
+        color = primaryColor
+    )
+    Card(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = dimensionResource(R.dimen.standard_elevation_medium),
+            pressedElevation = 5.dp
+        ),
+        shape = RoundedCornerShape(0.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(dimensionResource(R.dimen.standard_padding_medium))
+                .fillMaxWidth()
+        ) {
+            data.map {
+                Row {
+                    Image(
+                        painter = painterResource(id = icon),
+                        contentDescription = "cooking_icon"
+                    )
+                    Text(text = it)
+                }
+            }
         }
-        Text(
-            text = data.description,
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = W700
-        )
     }
 }

@@ -1,6 +1,6 @@
 package com.sample.presentation.feature.recipedetails.mapper
 
-import com.sample.domain.allrecipes.model.Recipe
+import com.sample.domain.recipedetail.entities.Recipe
 import com.sample.presentation.feature.recipedetails.uistate.RecipeDetailUiState
 import jakarta.inject.Inject
 
@@ -12,10 +12,10 @@ class RecipeUiMapper @Inject constructor() {
             imageUrl = recipe.image ?: "",
             description = recipe.cuisine ?: "",
             id = recipe.id?.toString() ?: "",
-            ingredients = recipe.ingredients,
+            ingredients = recipe.ingredients.joinToString(separator = ","),
             instructions = recipe.instructions,
             prepTimeMinutes = recipe.prepTimeMinutes ?: 0,
-            cookTimeMinutes = recipe.cookTimeMinutes ?: 0,
+            cookTimeMinutes =  recipe.cookTimeMinutes?.toString() ?: "",
             servings = recipe.servings ?: 0,
             difficulty = recipe.difficulty ?: "",
             cuisine = recipe.cuisine ?: "",

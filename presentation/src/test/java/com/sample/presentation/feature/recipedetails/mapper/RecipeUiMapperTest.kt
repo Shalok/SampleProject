@@ -1,6 +1,6 @@
 package com.sample.presentation.feature.recipedetails.mapper
 
-import com.sample.domain.allrecipes.model.Recipe
+import com.sample.domain.recipedetail.entities.Recipe
 import com.sample.presentation.feature.recipedetails.uistate.RecipeDetailUiState
 import org.junit.Test
 

@@ -1,19 +1,16 @@
 package com.sample.data.di
 
-import com.sample.domain.allrecipes.AllRecipesRepository
+import com.sample.domain.allrecipes.repository.AllRecipesRepository
 import com.sample.data.allrecipes.impl.AllRecipesRepositoryImpl
 import com.sample.data.mapper.AllRecipesDtoMapper
 import com.sample.data.mapper.RecipeDtoMapper
-import com.sample.domain.recipedetail.RecipeDetailRepository
+import com.sample.domain.recipedetail.repository.RecipeDetailRepository
 import com.sample.data.recipedetail.impl.RecipeDetailRepositoryImpl
 import com.sample.data.services.RecipesApiServices
-import dagger.Binds
-import dagger.Component
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 
 @Module

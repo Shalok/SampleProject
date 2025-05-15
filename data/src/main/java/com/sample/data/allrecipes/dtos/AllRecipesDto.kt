@@ -1,4 +1,4 @@
-package com.sample.data.allrecipes.entity
+package com.sample.data.allrecipes.dtos
 
 import com.google.gson.annotations.SerializedName
 import com.sample.data.recipedetail.entity.RecipesDto

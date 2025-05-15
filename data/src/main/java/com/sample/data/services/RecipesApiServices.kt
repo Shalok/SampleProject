@@ -1,6 +1,6 @@
 package com.sample.data.services
 
-import com.sample.data.allrecipes.entity.AllRecipesDto
+import com.sample.data.allrecipes.dtos.AllRecipesDto
 import com.sample.data.recipedetail.entity.RecipesDto
 import retrofit2.Response
 import retrofit2.http.GET

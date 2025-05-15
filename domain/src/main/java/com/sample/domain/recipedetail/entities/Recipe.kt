@@ -1,4 +1,4 @@
-package com.sample.domain.allrecipes.model
+package com.sample.domain.recipedetail.entities
 
 data class Recipe(
     val id: Int? = null,

@@ -1,6 +1,8 @@
 package com.sample.presentation.feature.allrecipes.mapper
 
-import com.sample.domain.allrecipes.model.AllRecipes
+import androidx.compose.ui.res.stringResource
+import com.sample.domain.allrecipes.entities.AllRecipes
+import com.sample.presentation.R
 import com.sample.presentation.feature.allrecipes.uistate.AllRecipesUiState
 import jakarta.inject.Inject
 
@@ -12,9 +14,13 @@ class AllRecipesUiMapper @Inject constructor() {
             recipesList = allRecipes.recipes.map {
                 AllRecipesUiState.RecipeUiState(
                     name = it.name ?: "",
-                    imageUrl = it.image ?: "",
-                    description = it.cuisine ?: "",
-                    id = it.id.toString()
+                    imageUrl = it.image ?:"",
+                    prepTime = it.prepTimeMinutes?.toString() ?: "",
+                    id = it.id.toString(),
+                    cookingTime = it.cookTimeMinutes?.toString() ?: "",
+                    difficulty = it.difficulty ?: "",
+                    cuisine = it.cuisine ?: "",
+                    caloriesPerServing = it.caloriesPerServing?.toString() ?: ""
                 )
             }
         )

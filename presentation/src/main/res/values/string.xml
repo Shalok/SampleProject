@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="recipe_minute"> Min</string>
+    <string name="ingredient">Ingredients</string>
+    <string name="instructions">Instructions</string>
+</resources>

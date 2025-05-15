@@ -1,7 +1,7 @@
 package com.sample.data.mapper
 
-import com.sample.data.allrecipes.entity.AllRecipesDto
-import com.sample.domain.allrecipes.model.AllRecipes
+import com.sample.data.allrecipes.dtos.AllRecipesDto
+import com.sample.domain.allrecipes.entities.AllRecipes
 import jakarta.inject.Inject
 
 class AllRecipesDtoMapper @Inject constructor(
