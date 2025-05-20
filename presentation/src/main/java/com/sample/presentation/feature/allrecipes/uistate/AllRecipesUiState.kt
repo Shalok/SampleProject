@@ -1,17 +1,17 @@
 package com.sample.presentation.feature.allrecipes.uistate
 
-sealed class AllRecipesUiState {
+sealed interface AllRecipesUiState {
 
-    data object LOADING : AllRecipesUiState()
+    data object LOADING : AllRecipesUiState
 
     data class ErrorUiState(
-        val errorMessage: String
-    ) : AllRecipesUiState()
+        val errorMessage: String?
+    ) : AllRecipesUiState
 
     data class DataLoadedUiState(
         val totalRecipes: Int,
         val recipesList: List<RecipeUiState>
-    ) : AllRecipesUiState()
+    ) : AllRecipesUiState
 
     data class RecipeUiState(
         val name: String,

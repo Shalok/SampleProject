@@ -1,8 +1,8 @@
 package com.sample.presentation.feature.recipedetails.uistate
 
-sealed class RecipeDetailUiState {
-    data object LOADING : RecipeDetailUiState()
-    data class ErrorState(val errorMessage: String) : RecipeDetailUiState()
+sealed interface RecipeDetailUiState {
+    data object LOADING : RecipeDetailUiState
+    data class ErrorState(val errorMessage: String?) : RecipeDetailUiState
     data class DataLoaded(
         val name: String,
         val imageUrl: String,
@@ -19,5 +19,5 @@ sealed class RecipeDetailUiState {
         val tags: List<String>,
         val userId: Int,
         val rating: Double
-    ) : RecipeDetailUiState()
+    ) : RecipeDetailUiState
 }

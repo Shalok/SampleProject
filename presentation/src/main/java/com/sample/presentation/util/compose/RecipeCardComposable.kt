@@ -39,7 +39,6 @@ fun RecipeCard(
 ) {
     Card(
         modifier = recipeCard.modifier
-            .wrapContentHeight()
             .fillMaxWidth()
             .clickable {
                 recipeCard.callback?.invoke(recipeCard.id)

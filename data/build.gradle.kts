@@ -3,15 +3,14 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
-    id("org.jetbrains.kotlinx.kover") version "0.9.1"
 }
 
 android {
-    namespace = "com.sample.data"
-    compileSdk = 35
+    namespace = libs.versions.namespace.get()
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 24
+        minSdk = libs.versions.minSdk.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -31,7 +30,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = libs.versions.jvmTarget.get()
     }
     hilt {
         enableExperimentalClasspathAggregation = true
@@ -49,14 +48,9 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    testImplementation(libs.kover.gradle.plugin)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.kover.gradle.plugin)
     implementation(project(":core"))
     implementation(project(":domain"))
-}
-subprojects {
-    apply(plugin = "org.jetbrains.kotlinx.kover")
 }

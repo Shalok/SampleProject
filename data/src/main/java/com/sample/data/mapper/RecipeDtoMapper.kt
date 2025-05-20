@@ -1,12 +1,12 @@
 package com.sample.data.mapper
 
-import com.sample.data.recipedetail.entity.RecipesDto
+import com.sample.data.recipedetail.dto.RecipesDto
 import com.sample.domain.recipedetail.entities.Recipe
 import jakarta.inject.Inject
 
 class RecipeDtoMapper @Inject constructor() {
 
-    fun invoke(recipeDto: RecipesDto): Recipe {
+    operator fun invoke(recipeDto: RecipesDto): Recipe {
         return Recipe(
             id = recipeDto.id,
             name = recipeDto.name,

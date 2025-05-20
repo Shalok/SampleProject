@@ -5,19 +5,18 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
     kotlin("plugin.serialization") version "2.1.20"
-    id("org.jetbrains.kotlinx.kover") version "0.9.1"
 }
 
 android {
-    namespace = "com.sample.project"
-    compileSdk = 35
+    namespace = libs.versions.namespace.get()
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.sample.project"
-        minSdk = 24
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        applicationId = libs.versions.applicationId.get()
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
+        versionCode = libs.versions.versionCode.get().toInt()
+        versionName = libs.versions.versionName.get()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -36,7 +35,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = libs.versions.jvmTarget.get()
     }
     buildFeatures {
         compose = true
@@ -75,30 +74,6 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    testImplementation(libs.kover.gradle.plugin)
     // module dependency
     implementation(project(":presentation"))
-}
-
-
-subprojects {
-    dependencies {
-        kover(project(":presentation"))
-        kover(project(":core"))
-        kover(project(":domain"))
-    }
-    apply(plugin = "org.jetbrains.kotlinx.kover")
-    kover {
-        reports {
-            filters {
-                excludes {
-                    listOf("*di.*", "*Factory*")
-                    listOf("*Generated", "*CustomAnnotationToExclude")
-                }
-            }
-        }
-        merge {
-            allProjects()
-        }
-    }
 }

@@ -1,19 +1,18 @@
 package com.sample.presentation.feature.allrecipes.viewmodel
 
-import com.sample.core.networking.Result
+import com.sample.core.networking.utility.Result
 import com.sample.domain.allrecipes.entities.AllRecipes
 import com.sample.domain.allrecipes.usecase.AllRecipesUseCase
 import com.sample.domain.recipedetail.entities.Recipe
 import com.sample.presentation.feature.allrecipes.intent.AllRecipesIntent
 import com.sample.presentation.feature.allrecipes.mapper.AllRecipesUiMapper
 import com.sample.presentation.feature.allrecipes.uistate.AllRecipesUiState
-import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
-import io.mockk.impl.annotations.MockK
-import io.mockk.impl.annotations.SpyK
+import io.mockk.mockk
 import io.mockk.verify
+import junit.framework.TestCase.assertNull
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -22,110 +21,121 @@ import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class AllRecipeViewModelTest {
 
-    @MockK
-    lateinit var getAllRecipeUseCase: AllRecipesUseCase
+    private val getAllRecipeUseCase = mockk<AllRecipesUseCase>()
 
-    @MockK
-    lateinit var throwable: Throwable
+    private val allRecipesUiMapper = mockk<AllRecipesUiMapper>()
 
-    @SpyK
-    var allRecipesUiMapper = AllRecipesUiMapper()
+    private val testClass = AllRecipeViewModel(getAllRecipeUseCase, allRecipesUiMapper)
 
-    private lateinit var testClass: AllRecipeViewModel
-    private val testDispatcher = UnconfinedTestDispatcher()
-
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setUp() {
-        MockKAnnotations.init(this)
-        Dispatchers.setMain(testDispatcher)
-        testClass = AllRecipeViewModel(
-            getAllRecipeUseCase,
-            allRecipesUiMapper,
-            testDispatcher
-        )
+        Dispatchers.setMain(UnconfinedTestDispatcher())
     }
 
     @Test
-    fun defaultUiStateTest() {
+    fun `GIVEN initialisation WHEN load page THEN return loading`() {
         val result = testClass.allRecipes.value
         assert(result is AllRecipesUiState.LOADING)
     }
 
     @Test
-    fun useCaseInvocation() =
-        runTest {
-            coEvery { getAllRecipeUseCase.invoke() } returns Result.Success(
-                getSampleRecipeData()
-            )
-            testClass.handleEvent(AllRecipesIntent.LoadPage)
-            coVerify(exactly = 1) {
-                getAllRecipeUseCase.invoke()
-            }
-        }
-
-    @Test
-    fun allRecipesSuccess() = runTest {
+    fun `GIVEN happy flow WHEN load page THEN return success`() = runTest {
         val recipe = getSampleRecipeData()
-        coEvery { getAllRecipeUseCase.invoke() } returns Result.Success(
+        coEvery { getAllRecipeUseCase() } returns Result.Success(
             recipe
         )
+        coEvery {
+            allRecipesUiMapper(recipe)
+        } returns getUiStateSuccessData()
         testClass.handleEvent(AllRecipesIntent.LoadPage)
         val result = testClass.allRecipes.value
         assert(result is AllRecipesUiState.DataLoadedUiState)
-        verify { allRecipesUiMapper.invoke(any()) }
+        verify { allRecipesUiMapper(eq(recipe)) }
     }
 
     @Test
-    fun allRecipesFailure() = runTest {
-        coEvery { getAllRecipeUseCase.invoke() } returns Result.Error(
+    fun `GIVEN happy flow WHEN load page THEN return error`() = runTest {
+        val throwable = mockk<Throwable>()
+        coEvery { getAllRecipeUseCase() } returns Result.Error(
             throwable
         )
-        every { throwable.message } returns "IO exception"
+        every { throwable.message } returns IO_EXCEPTION
         testClass.handleEvent(AllRecipesIntent.LoadPage)
         val result = testClass.allRecipes.value
         assert(result is AllRecipesUiState.ErrorUiState)
-        assert((result as AllRecipesUiState.ErrorUiState).errorMessage == "IO exception")
-        verify(exactly = 0) { allRecipesUiMapper.invoke(any()) }
+        assert((result as AllRecipesUiState.ErrorUiState).errorMessage == IO_EXCEPTION)
+        verify(exactly = 0) { allRecipesUiMapper(any()) }
     }
 
     @Test
-    fun allRecipesFailureWithNull() = runTest {
-        coEvery { getAllRecipeUseCase.invoke() } returns Result.Error(
+    fun `GIVEN happy flow WHEN load page THEN return error without throwable message`() = runTest {
+        val throwable = mockk<Throwable>()
+        coEvery { getAllRecipeUseCase() } returns Result.Error(
             throwable
         )
         every { throwable.message } returns null
         testClass.handleEvent(AllRecipesIntent.LoadPage)
         val result = testClass.allRecipes.value
         assert(result is AllRecipesUiState.ErrorUiState)
-        assert((result as AllRecipesUiState.ErrorUiState).errorMessage == "Something went wrong")
-        verify(exactly = 0) { allRecipesUiMapper.invoke(any()) }
-    }
-
-    @Test
-    fun allRecipesFailureWithThrowableNull() = runTest {
-        coEvery { getAllRecipeUseCase.invoke() } returns Result.Error(
-            null
-        )
-        testClass.handleEvent(AllRecipesIntent.LoadPage)
-        val result = testClass.allRecipes.value
-        assert(result is AllRecipesUiState.ErrorUiState)
-        assert((result as AllRecipesUiState.ErrorUiState).errorMessage == "Something went wrong")
-        verify(exactly = 0) { allRecipesUiMapper.invoke(any()) }
+        assertNull((result as AllRecipesUiState.ErrorUiState).errorMessage)
+        verify(exactly = 0) { allRecipesUiMapper(any()) }
     }
 
     private fun getSampleRecipeData() = AllRecipes(
         total = 1,
         recipes = listOf(
             Recipe(
-                id = 1,
-                name = "name",
-                image = "image",
-                cuisine = "cuisine"
+                id = ID,
+                name = NAME,
+                image = IMAGE_URL,
+                cuisine = CUISINE,
+                prepTimeMinutes = PREP_TIME,
+                cookTimeMinutes = COOKING_TIME,
+                difficulty = DIFFICULTY,
+                caloriesPerServing = CALORIES_PER_SERVING,
+                ingredients = listOf(),
+                instructions = listOf(),
+                tags = listOf(),
+                userId = 1,
+                rating = 1.0,
+                reviewCount = 1,
+                mealType = listOf()
             )
         )
     )
 
+    private fun getUiStateSuccessData() = AllRecipesUiState.DataLoadedUiState(
+        totalRecipes = 1,
+        recipesList = listOf(
+            AllRecipesUiState.RecipeUiState(
+                id = ID_UI_STATE,
+                name = NAME,
+                imageUrl = IMAGE_URL,
+                cuisine = CUISINE,
+                prepTime = PREP_TIME_UI_STATE,
+                cookingTime = COOKING_TIME_UI_STATE,
+                difficulty = DIFFICULTY,
+                caloriesPerServing = CALORIES_PER_SERVING_UI_STATE
+            )
+        )
+    )
+
+    private companion object {
+        private const val IO_EXCEPTION = "IO exception"
+        private const val NAME = "Kadhai Paneer"
+        private const val IMAGE_URL = "imageURL"
+        private const val CUISINE = "Mexican"
+        private const val ID = 1
+        private const val PREP_TIME = 30
+        private const val COOKING_TIME = 10
+        private const val DIFFICULTY = "Easy"
+        private const val CALORIES_PER_SERVING = 100
+        private const val ID_UI_STATE = "1"
+        private const val PREP_TIME_UI_STATE = "30"
+        private const val COOKING_TIME_UI_STATE = "10"
+        private const val CALORIES_PER_SERVING_UI_STATE = "100"
+    }
 }

@@ -1,6 +1,7 @@
 package com.sample.data.recipedetail.impl
 
-import com.sample.core.networking.Result
+import com.sample.core.networking.utility.Result
+import com.sample.core.networking.network.contract.ApiExecutor
 import com.sample.data.services.RecipesApiServices
 import com.sample.domain.recipedetail.entities.Recipe
 import com.sample.domain.recipedetail.repository.RecipeDetailRepository
@@ -8,25 +9,15 @@ import jakarta.inject.Inject
 
 internal class RecipeDetailRepositoryImpl @Inject constructor(
     private val recipesApiServices: RecipesApiServices,
-    private val recipeDtoMapper: com.sample.data.mapper.RecipeDtoMapper
+    private val recipeDtoMapper: com.sample.data.mapper.RecipeDtoMapper,
+    private val apiExecutor: ApiExecutor
 ) : RecipeDetailRepository {
     override suspend fun getRecipeDetails(recipeId: String): Result<Recipe> {
-        try {
-            val response = recipesApiServices.getRecipeDetail(recipeId)
-            if (response.isSuccessful) {
-                return response.body()?.let {
-                    Result.Success(recipeDtoMapper.invoke(it))
-                } ?: kotlin.run {
-                    Result.Error(Exception("Response body is null"))
-                }
-            }
-        } catch (throwable: Throwable) {
-            when (throwable) {
-                is Exception -> {
-                    return Result.Error(throwable)
-                }
-            }
+
+        val result = apiExecutor{recipesApiServices.getRecipeDetail(recipeId)}
+        return when(result){
+            is Result.Success -> Result.Success(recipeDtoMapper(result.data))
+            is Result.Error -> Result.Error(result.throwable)
         }
-        return Result.Error(Exception("Response body is null"))
     }
 }

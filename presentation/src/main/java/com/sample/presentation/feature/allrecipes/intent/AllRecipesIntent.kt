@@ -1,5 +1,6 @@
 package com.sample.presentation.feature.allrecipes.intent
 
-sealed class AllRecipesIntent {
-    data object LoadPage : AllRecipesIntent()
+sealed interface AllRecipesIntent {
+    data object LoadPage : AllRecipesIntent
+    data object RetryPageLoad : AllRecipesIntent
 }

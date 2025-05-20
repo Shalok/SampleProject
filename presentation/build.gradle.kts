@@ -5,16 +5,14 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
     kotlin("plugin.serialization") version "2.1.20"
-    id("org.jetbrains.kotlinx.kover") version "0.9.1"
 }
 
 android {
-    namespace = "com.sample.presentation"
-    compileSdk = 35
+    namespace = libs.versions.presentationNamespace.get()
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 24
-
+        minSdk = libs.versions.minSdk.get().toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -36,7 +34,7 @@ android {
         compose = true
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = libs.versions.jvmTarget.get()
     }
 }
 
@@ -67,12 +65,8 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.kover.gradle.plugin)
     // Module dependency
     implementation(project(":domain"))
     implementation(project(":core"))
     implementation(project(":data"))
-}
-subprojects {
-    apply(plugin = "org.jetbrains.kotlinx.kover")
 }

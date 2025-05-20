@@ -47,7 +47,6 @@ fun RecipeDetailScreen(
     val data by viewModel.recipeDetail.collectAsState()
     when (data) {
         is RecipeDetailUiState.DataLoaded -> {
-            IndeterminateCircularIndicator(false)
             RecipeDetailScreenContent(
                 data as RecipeDetailUiState.DataLoaded,
                 innerPadding
@@ -56,17 +55,16 @@ fun RecipeDetailScreen(
 
         RecipeDetailUiState.LOADING -> IndeterminateCircularIndicator(true)
         is RecipeDetailUiState.ErrorState -> {
-            IndeterminateCircularIndicator(false)
-            Text(text = (data as RecipeDetailUiState.ErrorState).errorMessage)
+            Text(
+                text = (data as RecipeDetailUiState.ErrorState).errorMessage
+                    ?: stringResource(R.string.generic_error_msg)
+            )
             Button(
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .wrapContentHeight(),
                 onClick = {
                     viewModel.handleEvents(RecipeDetailIntent.LoadPage)
                 }
             ) {
-                Text(text = "Retry")
+                Text(text = stringResource(R.string.text_retry))
             }
         }
     }
@@ -80,7 +78,6 @@ fun RecipeDetailScreenContent(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .wrapContentHeight()
             .padding(innerPadding)
             .verticalScroll(rememberScrollState())
     ) {

@@ -6,7 +6,7 @@ import jakarta.inject.Inject
 
 class RecipeUiMapper @Inject constructor() {
 
-    fun invoke(recipe: Recipe): RecipeDetailUiState {
+    operator fun invoke(recipe: Recipe): RecipeDetailUiState {
         return RecipeDetailUiState.DataLoaded(
             name = recipe.name ?: "",
             imageUrl = recipe.image ?: "",

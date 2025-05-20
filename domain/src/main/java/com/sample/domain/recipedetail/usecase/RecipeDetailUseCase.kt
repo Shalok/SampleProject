@@ -1,6 +1,6 @@
 package com.sample.domain.recipedetail.usecase
 
-import com.sample.core.networking.Result
+import com.sample.core.networking.utility.Result
 import com.sample.domain.recipedetail.entities.Recipe
 import com.sample.domain.recipedetail.repository.RecipeDetailRepository
 import jakarta.inject.Inject
@@ -10,6 +10,5 @@ class RecipeDetailUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(recipeId: String): Result<Recipe> {
         return recipeDetailRepository.getRecipeDetails(recipeId)
-
     }
 }

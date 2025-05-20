@@ -6,7 +6,7 @@ import jakarta.inject.Inject
 
 class AllRecipesUiMapper @Inject constructor() {
 
-    fun invoke(allRecipes: AllRecipes): AllRecipesUiState {
+    operator fun invoke(allRecipes: AllRecipes): AllRecipesUiState {
         return AllRecipesUiState.DataLoadedUiState(
             totalRecipes = allRecipes.total ?: 0,
             recipesList = allRecipes.recipes.map {
